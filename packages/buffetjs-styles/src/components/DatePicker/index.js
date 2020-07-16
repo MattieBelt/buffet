@@ -88,9 +88,11 @@ const DatePicker = styled.div`
     display: none;
   }
   .CalendarMonth_caption {
-    font-size: 1.3rem;
     padding-bottom: 45px;
     padding-top: 23px;
+    select {
+      max-width: 100px;
+    }
   }
   .DayPicker_transitionContainer {
     padding: 4px;

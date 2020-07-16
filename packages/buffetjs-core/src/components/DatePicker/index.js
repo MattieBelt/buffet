@@ -20,6 +20,8 @@ import { DatePicker as StyledDatepicker } from '@buffetjs/styles';
 import reducer, { initialState } from './reducer';
 
 import Input from '../InputText';
+import Select from '../Select';
+import Button from '../Button';
 
 function Datepicker({
   className,
@@ -177,25 +179,24 @@ function Datepicker({
           transitionDuration={0}
           renderMonthElement={({ month, onYearSelect }) =>
             isYearSelectVisible ? (
-              <select
+              <Select
+                name="date-picker-year-select"
+                className="Year"
                 value={month.year()}
-                onChange={e => {
-                  onYearSelect(month, e.target.value);
+                onChange={event => {
+                  onYearSelect(month, event.target.value);
                   toggleYearSelect();
                 }}
-              >
-                {range(month.year() - 7, month.year() + 7).map(
-                  (option, index) => (
-                    <option key={index.id} value={option}>
-                      {option}
-                    </option>
-                  )
-                )}
-              </select>
+                options={range(month.year() - 100, month.year() + 100)}
+              />
             ) : (
-              <button onClick={toggleYearSelect} type="button">
+              <Button
+                onClick={toggleYearSelect}
+                color="secondary"
+                type="button"
+              >
                 {month.format('MMMM YYYY')}
-              </button>
+              </Button>
             )
           }
         />
