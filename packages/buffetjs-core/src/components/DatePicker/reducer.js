@@ -4,6 +4,7 @@ const initialState = {
   isFocused: false,
   isVisible: false,
   visibleDate: '',
+  isYearSelectVisible: false,
 };
 
 function reducer(state, action) {
@@ -18,6 +19,8 @@ function reducer(state, action) {
       return { ...state, isFocused };
     case 'SET_IS_VISIBLE':
       return { ...state, isVisible };
+    case 'SET_IS_YEAR_SELECT_VISIBLE':
+      return { ...state, isYearSelectVisible: !state.isYearSelectVisible };
     default:
       return state;
   }

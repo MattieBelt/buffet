@@ -13,6 +13,7 @@ import 'react-dates/initialize';
 import { DayPickerSingleDateController } from 'react-dates';
 import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { range } from 'lodash';
 
 import { DatePicker as StyledDatepicker } from '@buffetjs/styles';
 
@@ -62,7 +63,13 @@ function Datepicker({
   }, []);
 
   let timer = null;
-  const { date, displayedDate, isFocused, isVisible } = state;
+  const {
+    date,
+    displayedDate,
+    isFocused,
+    isVisible,
+    isYearSelectVisible,
+  } = state;
 
   const getDateValue = () => {
     let dateValue = date ? date.format(displayFormat) : '';
@@ -134,6 +141,13 @@ function Datepicker({
     });
   };
 
+  const toggleYearSelect = shown => {
+    dispatch({
+      type: 'SET_IS_YEAR_SELECT_VISIBLE',
+      isVisible: shown,
+    });
+  };
+
   return (
     <StyledDatepicker isOpen={isVisible} className={className}>
       <div>
@@ -161,6 +175,29 @@ function Datepicker({
           onOutsideClick={() => toggleDatepicker(false)}
           daySize={37}
           transitionDuration={0}
+          renderMonthElement={({ month, onYearSelect }) =>
+            isYearSelectVisible ? (
+              <select
+                value={month.year()}
+                onChange={e => {
+                  onYearSelect(month, e.target.value);
+                  toggleYearSelect();
+                }}
+              >
+                {range(month.year() - 7, month.year() + 7).map(
+                  (option, index) => (
+                    <option key={index.id} value={option}>
+                      {option}
+                    </option>
+                  )
+                )}
+              </select>
+            ) : (
+              <button onClick={toggleYearSelect} type="button">
+                {month.format('MMMM YYYY')}
+              </button>
+            )
+          }
         />
       )}
     </StyledDatepicker>
